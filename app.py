@@ -93,7 +93,11 @@ st.metric(
     value=f"${tahmin:.2f}"
 )
 
+y_pred = model.predict(X)
 
+rmse = np.sqrt(
+    mean_squared_error(y, y_pred)
+)
 st.metric(
     "Model Hata Oranı (RMSE)",
     f"{rmse:.2f}"
