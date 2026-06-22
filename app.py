@@ -102,15 +102,11 @@ st.metric(
     "Model Hata Oranı (RMSE)",
     f"{rmse:.2f}"
 )
-st.subheader("LSTM Tahmin Grafiği")
 
-lstm_grafik = pd.DataFrame({
-    "Gerçek Son Fiyat": [son_fiyat],
-    "LSTM Tahmin": [tahmin_lstm[0][0]]
-})
 
-st.bar_chart(lstm_grafik)
-st.subheader("Gerçek ve Tahmin Karşılaştırması")
+l
+
+
 
 karsilastirma = pd.DataFrame({
     "Gerçek": y.tail(30).values,
