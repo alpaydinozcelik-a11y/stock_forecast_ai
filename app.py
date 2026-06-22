@@ -63,7 +63,6 @@ with col2:
 
 with col3:
     st.metric("Ortalama", f"{ortalama:.2f}")
-son_fiyat = data["Close"].iloc[-1]
 
 if data.empty:
     st.error("Yahoo Finance verisi alınamadı.")
