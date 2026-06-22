@@ -65,11 +65,16 @@ with col3:
     st.metric("Ortalama", f"{ortalama:.2f}")
 son_fiyat = data["Close"].iloc[-1]
 
+if data.empty:
+    st.error("Yahoo Finance verisi alınamadı.")
+    st.stop()
+
+son_fiyat = data["Close"].iloc[-1]
+
 st.metric(
     label="Son Kapanış Fiyatı",
     value=f"${son_fiyat:.2f}"
 )
-
 st.subheader("Yapay Zeka Fiyat Tahmini")
 
 data["Gun"] = np.arange(len(data))
