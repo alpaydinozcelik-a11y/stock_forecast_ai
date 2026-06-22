@@ -6,8 +6,8 @@ from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_squared_error
 import numpy as np
 from sklearn.preprocessing import MinMaxScaler
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import LSTM, Dense
+#from tensorflow.keras.models import Sequential
+#from tensorflow.keras.layers import LSTM, Dense
 st.title("Time Series Forecasting with Deep Learning")
 st.write("""
 Bu uygulama Yahoo Finance verilerini kullanarak hisse senedi zaman serisi analizi yapar.
