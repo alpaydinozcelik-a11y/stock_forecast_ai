@@ -88,77 +88,7 @@ st.metric(
     label="30 Gün Sonraki Tahmini Fiyat",
     value=f"${tahmin:.2f}"
 )
-# LSTM Derin Öğrenme Tahmini
 
-kapanis = data["Close"].values.reshape(-1, 1)
-
-scaler = MinMaxScaler(feature_range=(0, 1))
-scaled_data = scaler.fit_transform(kapanis)
-
-X_lstm = []
-y_lstm = []
-
-for i in range(60, len(scaled_data)):
-    X_lstm.append(scaled_data[i-60:i, 0])
-    y_lstm.append(scaled_data[i, 0])
-
-X_lstm = np.array(X_lstm)
-y_lstm = np.array(y_lstm)
-
-X_lstm = np.reshape(
-    X_lstm,
-    (X_lstm.shape[0], X_lstm.shape[1], 1)
-)
-
-model_lstm = Sequential()
-
-model_lstm.add(
-    LSTM(
-        units=50,
-        return_sequences=False,
-        input_shape=(X_lstm.shape[1], 1)
-    )
-)
-
-model_lstm.add(Dense(1))
-
-model_lstm.compile(
-    optimizer="adam",
-    loss="mean_squared_error"
-)
-
-model_lstm.fit(
-    X_lstm,
-    y_lstm,
-    epochs=3,
-    batch_size=32,
-    verbose=0
-)
-
-son_60 = scaled_data[-60:]
-son_60 = np.reshape(
-    son_60,
-    (1, 60, 1)
-)
-
-tahmin_lstm = model_lstm.predict(
-    son_60,
-    verbose=0
-)
-
-tahmin_lstm = scaler.inverse_transform(
-    tahmin_lstm
-)
-
-st.metric(
-    "LSTM 30 Gün Sonrası Tahmin",
-    f"${tahmin_lstm[0][0]:.2f}"
-)
-y_pred = model.predict(X)
-
-rmse = np.sqrt(
-    mean_squared_error(y, y_pred)
-)
 
 st.metric(
     "Model Hata Oranı (RMSE)",
@@ -180,24 +110,5 @@ karsilastirma = pd.DataFrame({
 })
 
 st.line_chart(karsilastirma)
-st.subheader("Model Karşılaştırması")
 
-karsi1, karsi2 = st.columns(2)
 
-with karsi1:
-    st.metric(
-        "Linear Regression",
-        f"${tahmin:.2f}"
-    )
-
-with karsi2:
-    st.metric(
-        "LSTM",
-        f"${tahmin_lstm[0][0]:.2f}"
-    )
-    st.subheader("Model Değerlendirmesi")
-
-if abs(tahmin - son_fiyat) < abs(tahmin_lstm[0][0] - son_fiyat):
-    st.success("En başarılı model: Linear Regression")
-else:
-    st.success("En başarılı model: LSTM")
